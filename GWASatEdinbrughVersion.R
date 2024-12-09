@@ -226,7 +226,7 @@ manhattan(
   genomewideline = FALSE)
 
       #################
-      # 9.1. Add a custom note on the far right
+      # 9.1. Add a text
       #################
  
       mtext(expression("nsnpChip = 1000"), side = 3, line = 3, cex = 0.8, adj = 1, col = "black")
