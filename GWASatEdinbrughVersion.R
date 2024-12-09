@@ -142,6 +142,13 @@ phenoColony <- vector("list", length = nColony)
       age_0 <- createMultiColony(x = colonies)
       age_0 <- buildUp(age_0)
       nColony <- nColonies(age_0)
+      #################
+      
+      # 6.3. Initialize data storage
+      #################
+      genoW <- vector("list", length = nColony)
+      genoQ <- vector("list", length = nColony)
+      phenoColony <- vector("list", length = nColony)
 
       #################
       # 6.2. Calculate ColonyPheno
