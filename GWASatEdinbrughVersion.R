@@ -221,12 +221,12 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
               snpchipMap <- merge(ahbmngPos, QgwasRRBLUP, by = "markerName")
               snpchipMapOrd <- snpchipMap[order(as.integer(snpchipMap$index)), ]
               snpchipMapOrd$position <- snpchipMapOrd$position
-              snpchipMapOrdSelRRBLUP <- snpchipMapOrd[, c("markerName", "chromosome", "position", "PValue")]
+              QgwasRRBLUP_nQTL01_h2_005_nsnpChip1000 <- snpchipMapOrd[, c("markerName", "chromosome", "position", "PValue")]
               
         #################
         # 8.3. Visualize
         #################                 
-        CMplot(snpchipMapOrdSel,type="p",
+        CMplot(QgwasRRBLUP_nQTL01_h2_005_nsnpChip1000,type="p",
                plot.type="m",LOG10=TRUE,
                threshold=NULL,file="jpg",
                file.name="",dpi=300,
@@ -278,13 +278,13 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
                 snpchipMap <- merge(ahbmngPos, QgwasGBLUP, by = "markerName")
                 snpchipMapOrd <- snpchipMap[order(as.integer(snpchipMap$index)), ]
                 snpchipMapOrd$position <- snpchipMapOrd$position
-                snpchipMapOrdSelGBLUP <- snpchipMapOrd[, c("markerName", "chromosome", "position", "PValue")]
+                QgwasGBLUP_nQTL01_h2_005_nsnpChip1000 <- snpchipMapOrd[, c("markerName", "chromosome", "position", "PValue")]
                 
             ##########
             # 8.4.2. Visualize GWAS GBLUP
             ###########
 
-            CMplot(snpchipMapOrdSelGBLUP,type="p",
+            CMplot(QgwasGBLUP_nQTL01_h2_005_nsnpChip1000,type="p",
                    plot.type="m",LOG10=TRUE,
                    threshold=NULL,file="jpg",
                    file.name="",dpi=300,
@@ -301,7 +301,7 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
             ##########
             # 8.4.4. QQ-plot GWAS GBLUP
             ###########
-            CMplot(snpchipMapOrdSelGBLUP,plot.type="q",box=FALSE,file="jpg",file.name="",dpi=300,
+            CMplot(QgwasGBLUP_nQTL01_h2_005_nsnpChip1000,plot.type="q",box=FALSE,file="jpg",file.name="",dpi=300,
                      conf.int=TRUE,conf.int.col=NULL,threshold.col="red",threshold.lty=2,
                      file.output=FALSE,verbose=TRUE,width=5,height=5, main = "QgwasGBLUP")
               
