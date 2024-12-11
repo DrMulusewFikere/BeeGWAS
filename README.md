@@ -1,1 +1,3 @@
 # BeeGWAS
+
+## QC
