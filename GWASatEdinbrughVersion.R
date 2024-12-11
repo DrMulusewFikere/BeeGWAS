@@ -298,6 +298,12 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
             mtext(expression("nsnpChip = 1000"), side = 3, line = 3, cex = 0.8, adj = 1, col = "black")
             mtext(expression("nQTL = 1, intialH2=0.05"), side = 3, line = 2, cex = 0.8, adj = 1, col = "black")
             mtext(expression("nWorker = 100"), side = 3, line = 1, cex = 0.8, adj = 1, col = "black")
+            ##########
+            # 8.4.4. QQ-plot GWAS GBLUP
+            ###########
+            CMplot(snpchipMapOrdSelGBLUP,plot.type="q",box=FALSE,file="jpg",file.name="",dpi=300,
+                     conf.int=TRUE,conf.int.col=NULL,threshold.col="red",threshold.lty=2,
+                     file.output=FALSE,verbose=TRUE,width=5,height=5, main = "QgwasGBLUP")
               
 ##############################
 # 9. Pool worker GWAS
