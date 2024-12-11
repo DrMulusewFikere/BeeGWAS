@@ -211,7 +211,7 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
               a <- QgwasRRBLUP$U$`u:Z`$yield05 # marker effects
               se.a <- sqrt(diag(kronecker(diag(ncol(Z)),QgwasRRBLUP$sigma$`u:Z`)- QgwasRRBLUP$PevU$`u:Z`$yield05)) # SE of
               t.stat <- a/se.a # t-statistic
-              pvalRRBLUP <- phenoColony(t.stat,df=n-k-1) # -log10(pval)
+              pvalRRBLUP <- dt(t.stat,df=n-k-1) # -log10(pval)
                
               ##########
               # 8.2.2. Calculate SNP effect, SE and P values
@@ -269,7 +269,7 @@ save.image("ahbFounderGenomeHaploAg0_005.RData")
            var.a.from.g <- t(M)%*%Qgrminv%*% (var.g) %*% t(Qgrminv)%*%M
            se.a.from.g <- sqrt(diag(var.a.from.g))
            t.stat.from.g <- a.from.g/se.a.from.g
-           pvalGBLUP <- phenoColony(t.stat.from.g,df=n-k-1) 
+           pvalGBLUP <- dt(t.stat.from.g,df=n-k-1) 
                 
                  #######
                  # 8.4.1.1 Calculate SNP effect, SE and P values GBLUP
