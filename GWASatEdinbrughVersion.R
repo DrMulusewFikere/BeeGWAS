@@ -4,17 +4,11 @@
 library(AlphaSimR)
 library(SIMplyBee)
 library(data.table)
-library(asreml)
-library(qqman)
-library(lme4)
-library(parallel)
-library(matrixcalc)
-library(asremlPlus)
-library(gtools)
-library(ASRgenomics)
+library(sommer)
+library(CMplot)
 
 # devtools::install_github(repo="HighlanderLab/SIMplyBee@main")
-setwd("/Users/mulusewfikere/Documents/managed AHB/data/gregor/")
+# setwd("/Users/mulusewfikere/Documents/managed\ AHB/data/gregor/")
 
 ##############################
 # 1. Read genotype and map data
