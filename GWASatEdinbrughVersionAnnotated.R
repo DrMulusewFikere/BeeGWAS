@@ -5,6 +5,7 @@ library(data.table)
 library(parallel)
 library(matrixcalc)
 library(AGHmatrix)
+library(CMplot)
 
 # ---- Section 2 - Set workspace ----
 setwd("/Users/mulusewfikere/Documents/managed AHB/data/gregor/")
