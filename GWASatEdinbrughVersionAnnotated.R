@@ -162,25 +162,19 @@ n <- nrow(phenoColony)
 # To be used for degrees of freedom (number of levels in fixed effects)
 k <- 1
 
-## ---- Section 9.1 - GWAS by GBLUP approach ---- 
 
-M <- genoQ
-# Calculate allele frequencies (p_j)
-p <- colMeans(genoQ) / 2
-# Compute the centered genotype matrix Z
-M <- scale(genoQ, center = 2 * p, scale = FALSE)
-
+## ---- Section 9.1 - Center M matrix and make GRM ---- 
+genoQ_centered <- scale(genoQ, center = TRUE, scale = FALSE)
 # Qgrm <- calcBeeGRMIbs(x = genoQ, sex = rep("F", nrow(genoQ)))
-
 Qgrm <- Gmatrix(SNPmatrix=genoQ, 
                 missingValue=-9, 
                 maf=0.05, 
                 method="VanRaden")
 
 Qgrminv <-solve(Qgrm + diag(1e-6, ncol(Qgrm), ncol(Qgrm)))
-MTQgrminv<- t(M)%*%Qgrminv
+MTQgrminv<- t(genoQ_centered)%*%Qgrminv
 
-## ---- Section 9.2 - Fit a model ----
+## ---- Section 9.2 - GWAS by GBLUP approach: Fit a model ----
 
 QgwasGBLUP <- mmer(yield05~1,
                    random=~vsr(QID, Gu=Qgrm),
@@ -193,7 +187,7 @@ QgwasGBLUP <- mmer(yield05~1,
 a.from.g <-MTQgrminv%*%matrix(QgwasGBLUP$U$`u:QID`$yield05,ncol=1)
 plot(genoQ %*% a.from.g, QgwasGBLUP$U$`u:QID`$yield05); abline(a=0,b=1)
 var.g <- kronecker(Qgrm,QgwasGBLUP$sigma$`u:QID`)- QgwasGBLUP$PevU$`u:QID`$yield05
-var.a.from.g <- t(M)%*%Qgrminv%*% (var.g) %*% t(Qgrminv)%*%M
+var.a.from.g <- t(genoQ_centered)%*%Qgrminv%*% (var.g) %*% t(Qgrminv)%*%genoQ_centered
 se.a.from.g <- sqrt(diag(var.a.from.g))
 t.stat.from.g <- a.from.g/se.a.from.g
 pvalGBLUP <- dt(t.stat.from.g,df=n-k-1) 
