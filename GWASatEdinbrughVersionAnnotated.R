@@ -286,12 +286,102 @@ pooledGenoW <- do.call(rbind, genoW)
 pooledGenoWrnd <- round(pooledGenoW, digits = 0)
 rownames(pooledGenoWrnd) <-phenoColony$WID
 
-# ---- Section 11 - Save RData ----     
+# ---- Section 11 - Fit worker model ----     
 
-save.image("ahbFounderGenomeHaploAg0_QW.RData")
-        
-        
+## ---- Section 11.1 - Center M matrix and make GRM ---- 
+genoPoolWorker_centered <- scale(genoPoolWorker, center = TRUE, scale = FALSE)
+Wgrm <- Gmatrix(SNPmatrix=genoPoolWorker, 
+                missingValue=-9, 
+                maf=0.05, 
+                method="VanRaden")
 
+Wgrminv <-solve(Wgrm + diag(1e-6, ncol(Wgrm), ncol(Wgrm)))
+MTWgrminv<- t(genoPoolWorker_centered)%*%Wgrminv
+
+## ---- Section 11.2 - GWAS by GBLUP approach: Fit a model ----
+
+WgwasGBLUP <- mmer(yield05~1,
+                   random=~vsr(WID, Gu=Wgrm),
+                   rcov=~units, nIters=3,
+                   verbose = FALSE,
+                   data=phenoColony)
+
+## ---- Section 11.3 - Calculate SNP effect, SE and P values ----
+
+a.from.g <-MTWgrminv%*%matrix(WgwasGBLUP$U$`u:WID`$yield05,ncol=1)
+plot(genoPoolWorker %*% a.from.g, WgwasGBLUP$U$`u:WID`$yield05); abline(a=0,b=1)
+var.g <- kronecker(Wgrm,WgwasGBLUP$sigma$`u:WID`)- WgwasGBLUP$PevU$`u:WID`$yield05
+var.a.from.g <- t(genoPoolWorker_centered)%*%Wgrminv%*% (var.g) %*% t(Wgrminv)%*%genoPoolWorker_centered
+se.a.from.g <- sWrt(diag(var.a.from.g))
+t.stat.from.g <- a.from.g/se.a.from.g
+pvalGBLUP <- dt(t.stat.from.g,df=n-k-1) 
+
+## ---- Section 11.4 - Calculate SNP effect, SE and P values GBLUP ----
+
+WgwasGBLUP <- data.frame(markerName = colnames(genoPoolWorker), 
+                         Beta = a.from.g, 
+                         t_stat = t.stat.from.g, 
+                         SE = se.a.from.g, 
+                         PValue = pvalGBLUP)
+
+## ---- Section 11.5 - Collate GWAS summary stat ----
+
+WgwasGBLUP$index <- seW(1:ncol(genoPoolWorker))
+snpchipMap <- merge(ahbmngPos, WgwasGBLUP, by = "markerName")
+snpchipMapOrd <- snpchipMap[order(as.integer(snpchipMap$index)), ]
+snpchipMapOrd$position <- snpchipMapOrd$position
+WgwasGBLUP_nWTL01_h2_005_nsnpChip100 <- snpchipMapOrd[, c("markerName", "chromosome", "position", "PValue")]
+
+## ---- Section 11.5 - Visualize GWAS GBLUP ----
+
+CMplot(WgwasGBLUP_nWTL01_h2_005_nsnpChip100,type="p",
+       plot.type="m",LOG10=TRUE,
+       threshold=NULL,file="jpg",
+       file.name="",dpi=300,
+       file.output=FALSE,
+       verbose=TRUE,
+       width =14,height=6,
+       chr.labels.angle=0, 
+       main = "WgwasGBLUP")
+
+### ---- Section 11.5.1 - Add a custom note on the far right ----               
+mtext(expression("nsnpChip = 1000"), 
+      side = 3, 
+      line = 3, 
+      cex = 0.8, 
+      adj = 1, 
+      col = "black")
+mtext(expression("nWTL = 1, intialH2=0.05"), 
+      side = 3, 
+      line = 2, 
+      cex = 0.8, 
+      adj = 1, 
+      col = "black")
+mtext(expression("nWorker = 100"), 
+      side = 3, 
+      line = 1, 
+      cex = 0.8, 
+      adj = 1, 
+      col = "black")
+
+## ---- Section 11.6 - WW-plot GWAS GBLUP ----          
+
+CMplot(WgwasGBLUP_nWTL01_h2_005_nsnpChip100,
+       plot.type="W",
+       box=FALSE,
+       file="jpg",
+       file.name="",
+       dpi=300,
+       conf.int=TRUE,
+       conf.int.col=NULL,
+       threshold.col="red",
+       threshold.lty=2,
+       file.output=FALSE,
+       verbose=TRUE,
+       width=5,
+       height=5, 
+       main = "WgwasGBLUP")      
+        
 # ---- Section 12 - Queen and worker GWAS ----           
         
 
