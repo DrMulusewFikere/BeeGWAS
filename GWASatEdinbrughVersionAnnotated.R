@@ -281,7 +281,6 @@ getChipsName <- colnames(getSnpGeno(age_0, snpChip = 1, caste = "workers",collap
 poolWorkerChips_nQTL1_h05 <- do.call(rbind, lapply(X = getSegSiteGeno(x = age_0, caste = "workers", nInd = 1), 
                                          FUN = getPooledGeno, type = "mean"))[,getChipsName]
 
-
 ## ---- Section 10.2 - Collate Pull worker genotype ----    
 pooledGenoW <- do.call(rbind, genoW)
 pooledGenoWrnd <- round(pooledGenoW, digits = 0)
