@@ -384,6 +384,12 @@ CMplot(WgwasGBLUP_nWTL01_h2_005_nsnpChip100,
         
 # ---- Section 12 - Queen and worker GWAS ----           
         
+ QWmodel.asr <- asreml(fixed = yield05 ~ 1,
+                            random = ~ vm(QID, grmQ.2) + vm(WID, Wgrm),
+                            data = phenoColony,
+                            # ai.loadings = TRUE,
+                            # ai.sing = TRUE,
+                            workspace = "16gb")
 
-      
+
       
