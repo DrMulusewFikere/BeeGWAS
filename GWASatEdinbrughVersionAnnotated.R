@@ -385,11 +385,36 @@ CMplot(WgwasGBLUP_nWTL01_h2_005_nsnpChip100,
 # ---- Section 12 - Queen and worker GWAS ----           
         
  QWmodel.asr <- asreml(fixed = yield05 ~ 1,
-                            random = ~ vm(QID, grmQ.2) + vm(WID, Wgrm),
+                            random = ~ vm(QID, Qgrm) + vm(WID, Wgrm),
                             data = phenoColony,
                             # ai.loadings = TRUE,
                             # ai.sing = TRUE,
                             workspace = "16gb")
 
 
+# ---- Section 13 - Pull predictions from Queen and worker model ----      
+
+
+# ---- Section 14 - Population structure Q,W and original genotype data ----   
+## ---- Section 14.1 - Eigen decomposition of the Qgrm ----
+eigen_result <- eigen(Qgrm)
+eigenvalues <- eigen_result$values
+eigenvectors <- eigen_result$vectors
+eigenvalues <- pmax(eigenvalues, 0)
+
+## ---- Section 14.2 - Compute PCA scores ----
+pca_scores <- eigenvectors %*% diag(sqrt(eigenvalues))
+pca_df <- data.frame(
+  PC1 = pca_scores[, 1],
+  PC2 = pca_scores[, 2])
+
+## ---- Section 14.3 - Plot the PCA results ----
+ggplot(pca_df, aes(x = PC1, y = PC2)) +
+  geom_point(size = 2, color = "blue") +
+  # geom_text(vjust = -0.5, size = 3) +
+  theme_minimal() +
+  labs(title = "PCA of Queen Genotype nsnpChip-2",
+    x = "PCA 1",
+    y = "PCA 2")
+      
       
