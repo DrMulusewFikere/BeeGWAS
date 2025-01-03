@@ -472,7 +472,7 @@ sampleInfo <- rbind(Q,W,initialGeno)
 # Combine all genofile
 Q_W_initialGeno <- rbind(genoQ,poolWorkerChip2_nQTL1_h05_rwnd,originalGeno)
 
-## per lineage
+## per attribute
 subAttribute <- as.matrix(sampleInfo$sampleInfo)
 pop.gen_subAttribute <- popgen(M = Q_W_initialGeno, subgroups = subAttribute)
 pop.gen_subAttribute$bygroup$F.stats$Genotypes
