@@ -382,17 +382,48 @@ CMplot(WgwasGBLUP_nWTL01_h2_005_nsnpChip100,
        height=5, 
        main = "WgwasGBLUP")      
         
-# ---- Section 12 - Queen and worker GWAS ----           
-        
- QWmodel.asr <- asreml(fixed = yield05 ~ 1,
-                            random = ~ vm(QID, Qgrm) + vm(WID, Wgrm),
-                            data = phenoColony,
-                            # ai.loadings = TRUE,
-                            # ai.sing = TRUE,
-                            workspace = "16gb")
+# ---- Section 12 - Queen + worker GWAS Model ----           
+## ---- Section 12.1. Combine the raw genotype ----
+rownames(genoPoolWorker) <- phenoColony$WID
+rownames(genoQ) <- phenoColony$QID
+genoQW <- rbind(genoQ,genoPoolWorker)
+
+## ---- Section 12.2 - Construct GRM ---- 
+QWgrm <- Gmatrix(SNPmatrix=genoQW, 
+                missingValue=-9, 
+                maf=0.05, 
+                method="VanRaden")
+
+QWgrm.2 <- QWgrm + diag(nrow(genoQW))*0.000001
+genoQW_centered <- scale(QWgrm.2, center = TRUE, scale = FALSE)
+
+QWgrminv <-solve(QWgrm.2 + diag(1e-6, ncol(QWgrm.2), ncol(QWgrm.2)))
+MTQWgrminv <- t(genoPoolWorker_centered)%*%QWgrminv
+
+## ---- Section 12.3 - GWAS by GBLUP approach: Fit a model ----
+phenoColony$QID <- factor(phenoColony$QID, levels = rownames(QWgrm.2))
+phenoColony$WID <- factor(phenoColony$WID, levels = rownames(QWgrm.2))
+
+asreml.options(dense = ~ vm(QID, QWgrm.2))
+asreml.options(dense = ~ vm(WID, QWgrm.2))
+QWmodel.asr <- asreml(fixed = yield05 ~ 1,
+                      random = ~ vm(QID, QWgrm.2) + vm(WID, QWgrm.2),
+                      data = phenoColony,
+                      maxiter = 100,
+                      # ai.loadings = TRUE,
+                      # ai.sing = TRUE,
+                      workspace = "32gb")
 
 
-# ---- Section 13 - Pull predictions from Queen and worker model ----      
+## ---- Section 12.4 - Pull predictions from Queen and worker model ----      
+## ---- Section 12.5. QUEEN: Predict SNP effects using the model and Extract variance components ----
+QW_Q_predictions <- predict(QWmodel.asr, classify = "QID", only = "vm(QID, Qgrm.2)", pworkspace = "16gb", vcov = T)
+QW_Q_blup_individuals <- QW_Q_predictions$pvals
+QW_Q_pev_individuals <- as.matrix(predictions$vcov)
+## ---- Section 12.6. WORKER: Predict SNP effects using the model and Extract variance components ----
+QW_W_predictions <- predict(QWmodel.asr, classify = "WID", only = "vm(WID, Qgrm.2)", pworkspace = "16gb", vcov = T)
+QW_W_blup_individuals <- QW_W_predictions$pvals
+QW_W_pev_individuals <- as.matrix(predictions$vcov)
 
 
 # ---- Section 14 - Population structure Q,W and original genotype data ----   
