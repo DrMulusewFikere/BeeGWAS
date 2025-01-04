@@ -413,18 +413,16 @@ QWmodel.asr <- asreml(fixed = yield05 ~ 1,
                       # ai.loadings = TRUE,
                       # ai.sing = TRUE,
                       workspace = "32gb")
-
-
-## ---- Section 12.4 - Pull predictions from Queen and worker model ----      
-## ---- Section 12.5. QUEEN: Predict SNP effects using the model and Extract variance components ----
+    
+## ---- Section 12.4. QUEEN: Predict SNP effects using the model and Extract variance components ----
 QW_Q_predictions <- predict(QWmodel.asr, classify = "QID", only = "vm(QID, Qgrm.2)", pworkspace = "16gb", vcov = T)
 QW_Q_blup_individuals <- QW_Q_predictions$pvals
-## ---- Section 12.6. WORKER: Predict SNP effects using the model and Extract variance components ----
+## ---- Section 12.5. WORKER: Predict SNP effects using the model and Extract variance components ----
 QW_W_predictions <- predict(QWmodel.asr, classify = "WID", only = "vm(WID, Qgrm.2)", pworkspace = "16gb", vcov = T)
 QW_W_blup_individuals <- QW_W_predictions$pvals
 QW_W_pev_individuals <- as.matrix(predictions$vcov)
 
-## ---- Section 12.7. Bcksolve SNP effects Q + W model ----
+## ---- Section 12.6. Backsolve SNP effects Q + W model ----
 
 # ---- Section 14 - Population structure Q,W and original genotype data ----   
 ## ---- Section 14.1 - Eigen decomposition of the Qgrm ----
