@@ -422,6 +422,5 @@ QW_W_predictions <- predict(QWmodel.asr, classify = "WID", only = "vm(WID, Qgrm.
 QW_W_blup_individuals <- QW_W_predictions$pvals
 QW_W_pev_individuals <- as.matrix(predictions$vcov)
 
-## ---- Section 12.6. Backsolve SNP effects Q + W model ----
 
 
