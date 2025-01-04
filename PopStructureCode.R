@@ -1,17 +1,17 @@
-# ---- Section 14 - Population structure Q,W and original genotype data ----   
-## ---- Section 14.1 - Eigen decomposition of the Qgrm ----
+# ---- Section 1 - Population structure Q,W and original genotype data ----   
+## ---- Section 1.1 - Eigen decomposition of the Qgrm ----
 eigen_result <- eigen(Qgrm)
 eigenvalues <- eigen_result$values
 eigenvectors <- eigen_result$vectors
 eigenvalues <- pmax(eigenvalues, 0)
 
-## ---- Section 14.2 - Compute PCA scores ----
+## ---- Section 1.2 - Compute PCA scores ----
 pca_scores <- eigenvectors %*% diag(sqrt(eigenvalues))
 pca_df <- data.frame(
   PC1 = pca_scores[, 1],
   PC2 = pca_scores[, 2])
 
-## ---- Section 14.3 - Plot the PCA results ----
+## ---- Section 1.3 - Plot the PCA results ----
 ggplot(pca_df, aes(x = PC1, y = PC2)) +
   geom_point(size = 2, color = "blue") +
   # geom_text(vjust = -0.5, size = 3) +
@@ -20,7 +20,7 @@ ggplot(pca_df, aes(x = PC1, y = PC2)) +
        x = "PCA 1",
        y = "PCA 2")
 
-# ----- Section 15. population structure -----
+# ----- Section 2. population structure -----
 selected_genoFile_indices <- colnames(genoQ)
 originalGeno <- pullSegSiteGeno(ahbFounderGenomeHaplo)[,selected_genoFile_indices]
 sampleInfoQ <- paste(seq(1:nrow(genoQ)),"Q", sep = "_")
