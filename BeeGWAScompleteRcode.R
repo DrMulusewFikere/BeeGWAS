@@ -302,7 +302,7 @@ for (rep in 1:num_replications) {
 # ---- Section 10. Fit a worker model ----     
 ## ---- Section 10.1. Pull worker genotype ----    
 getChipsName <- colnames(getSnpGeno(age_0, snpChip = nChip, caste = "workers",collapse = T))
-poolWorkerChips <- do.call(rbind, lapply(X = getSegSiteGeno(x = age_0, caste = "workers", nInd = 10), 
+poolWorkerChips <- do.call(rbind, lapply(X = getSegSiteGeno(x = age_0, caste = "workers"), 
                                          FUN = getPooledGeno, type = "mean"))[,getChipsName]
 genoW <- round(poolWorkerChips, digits = 0)
 
