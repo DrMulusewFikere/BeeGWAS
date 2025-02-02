@@ -197,7 +197,7 @@ for (rep in 1:num_replications) {
       
       ## ---- Section 8.1. remove monomorphic loci, center M matrix and make GRM ---- 
       
-     geno.ready <- raw.data(data = as.matrix(genoQ),
+     genoQ.ready <- raw.data(data = as.matrix(genoQ),
                        frame = "wide",
                        base = FALSE,
                        sweep.sample = 0.5,
@@ -205,8 +205,8 @@ for (rep in 1:num_replications) {
                        maf = 0.01,
                        imput = FALSE)
 
-      dim(geno.ready$M.clean)
-      genoQclean <- geno.ready$M.clean
+      dim(genoQ.ready$M.clean)
+      genoQclean <- genoQ.ready$M.clean
       genoQ_centered <- scale(genoQclean, center = TRUE, scale = FALSE)
       grmQ <- Gmatrix(SNPmatrix=genoQ,
                       missingValue=-9,
@@ -339,7 +339,7 @@ a.from.gW <-MTgrmWinv%*%matrix(WgwasGBLUP$U$`u:WID`$yield,ncol=1)
 plot(genoWclean %*% a.from.gW, WgwasGBLUP$U$`u:WID`$yield); abline(a=0,b=1)
 var.gW <- kronecker(grmW,WgwasGBLUP$sigma$`u:WID`)- WgwasGBLUP$PevU$`u:WID`$yield
 var.a.from.gW <- t(genoW_centered)%*%grmWinv%*% (var.gW) %*% t(grmWinv)%*%genoW_centered
-se.a.from.gW <- sWrt(diag(var.a.from.gW))
+se.a.from.gW <- sqrt(diag(var.a.from.gW))
 t.stat.from.gW <- a.from.gW/se.a.from.gW
 WpvalGBLUP <- dt(t.stat.from.gW,df=n-k-1)
 
