@@ -197,39 +197,33 @@ for (rep in 1:num_replications) {
       
       ## ---- Section 8.1. remove monomorphic loci, center M matrix and make GRM ---- 
       
-      genoQ.ready <- raw.data(data = as.matrix(genoQ), 
-                              frame = "wide", 
-                              base = FALSE, 
-                              sweep.sample = 0.5, 
-                              call.rate = 0.95, 
-                              maf = 0.01, 
-                              imput = FALSE)
-      
-      dim(genoQ.ready$M.clean)
-      genoQclean <- genoQ.ready$M.clean
+     geno.ready <- raw.data(data = as.matrix(genoQ),
+                       frame = "wide",
+                       base = FALSE,
+                       sweep.sample = 0.5,
+                       call.rate = 0.95,
+                       maf = 0.01,
+                       imput = FALSE)
+
+      dim(geno.ready$M.clean)
+      genoQclean <- geno.ready$M.clean
       genoQ_centered <- scale(genoQclean, center = TRUE, scale = FALSE)
-      # grmQ <- calcBeeGRMIbs(x = genoQclean, sex = rep("F", nrow(genoQclean)))
-      grmQTemp <- Gmatrix(SNPmatrix=genoQ, 
-                      missingValue=-9, 
-                      maf=0.01, 
+      grmQ <- Gmatrix(SNPmatrix=genoQ,
+                      missingValue=-9,
+                      maf=0.01,
                       method="VanRaden")
       
-      # Make a semi-positive definite
-      grmQ <- grmQTemp + diag(nrow(genoQ))*0.000001
-      is.positive.definite(grmQ) # has to be TRUE
       grmQinv <- solve(grmQ + diag(1e-6, ncol(grmQ), ncol(grmQ)))
       MTgrmQinv<- t(genoQ_centered)%*%grmQinv
       
       # ---- Section 9. Fit a queen model----
       ## ---- Section 9.1. Structure pheno and geno data
-      phenoColony$idQ <- phenoColony$QID 
-      phenoColony$QID <- factor(as.character(phenoColony$idQ, levels = rownames(grmQ)))
       QgwasGBLUP <- mmer(yield~1,
-                         random=~vsr(QID, Gu=grmQ),
-                         rcov=~units, nIters=3,
-                         verbose = FALSE,
-                         data=phenoColony)
-      
+                     random=~vsr(QID, Gu=grmQ),
+                     rcov=~units, nIters=3,
+                     verbose = FALSE,
+                     data=phenoColony)
+
       ## ---- Section 9.2. Back solve and calculate SNP effect, snpSE and Pvalues ----
       
       a.from.gQ <-MTgrmQinv%*%matrix(QgwasGBLUP$U$`u:QID`$yield,ncol=1)
@@ -238,7 +232,7 @@ for (rep in 1:num_replications) {
       var.a.from.gQ <- t(genoQ_centered)%*%grmQinv%*% (var.gQ) %*% t(grmQinv)%*%genoQ_centered
       se.a.from.gQ <- sqrt(diag(var.a.from.gQ))
       t.stat.from.gQ <- a.from.gQ/se.a.from.gQ
-      QpvalGBLUP <- dt(t.stat.from.gQ,df=n-k-1) 
+      QpvalGBLUP <- dt(t.stat.from.gQ,df=n-k-1)
       
       ## ---- Section 9.3. Structure GWAS summary stat ----
       
@@ -259,7 +253,7 @@ for (rep in 1:num_replications) {
                                    "nSample_", sampleSize, 
                                    "_nQTL_",nQtlPerChr,
                                    "_h2_", colonyH2,
-                                   "_nChip_",nChip100, 
+                                   "_nChip_",nChip, 
                                    "_nRep_", rep, ".csv")
       fwrite(QgwasGBLUP_summary_tmp, file = QgwasGBLUP_summary)
       
@@ -307,28 +301,26 @@ poolWorkerChips <- do.call(rbind, lapply(X = getSegSiteGeno(x = age_0, caste = "
 genoW <- round(poolWorkerChips, digits = 0)
 
 ## ---- Section 10.2. Set a threshold and manage monomorphic loci ---- 
-genoW.ready <- raw.data(data = as.matrix(genoW), 
-                        frame = "wide", 
-                        base = FALSE, 
-                        sweep.sample = 0.5, 
-                        call.rate = 0.95, 
-                        maf = 0.01, 
-                        imput = FALSE)
+genoW.ready <- raw.data(data = as.matrix(genoW),
+                       frame = "wide",
+                       base = FALSE,
+                       sweep.sample = 0.5,
+                       call.rate = 0.95,
+                       maf = 0.01,
+                       imput = FALSE)
 
 dim(genoW.ready$M.clean)
+genoWclean <- genoW.ready$M.clean
 ## ---- Section 10.3. Store a clean pooled worker data for down stream analysis ---- 
 genoWclean <- genoW.ready$M.clean
 genoW_centered <- scale(genoWclean, center = TRUE, scale = FALSE)
-grmWTemp <- Gmatrix(SNPmatrix=genoW, 
-                    missingValue=-9, 
-                    maf=0.00, 
-                    method="VanRaden")
+grmW <- Gmatrix(SNPmatrix=genoW,
+                missingValue=-9,
+                maf=0.01,
+                method="VanRaden")
 
-# Make a semi-positive definite
-grmW <- grmWTemp + diag(nrow(genoW))*0.000001
-is.positive.definite(grmW) # has to be TRUE
 grmWinv <- solve(grmW + diag(1e-6, ncol(grmW), ncol(grmW)))
-MTgrmWinv <- t(genoW_centered)%*%grmWinv
+MTgrmWinv<- t(genoW_centered)%*%grmWinv
 
 ## ---- Section 10.4. Fit a queen model
 phenoColony$idW <- seq(nrow(phenoColony) + 1, length.out = nrow(phenoColony))
@@ -343,13 +335,13 @@ WgwasGBLUP <- mmer(yield~1,
                    data=phenoColony)
 
 ## ---- Section 10.5. Back solve and calculate SNP effect, snpSE and Pvalues ----
-a.from.gW <- MTgrmWinv%*%matrix(WgwasGBLUP$U$`u:WID`$yield,ncol=1)
+a.from.gW <-MTgrmWinv%*%matrix(WgwasGBLUP$U$`u:WID`$yield,ncol=1)
 plot(genoWclean %*% a.from.gW, WgwasGBLUP$U$`u:WID`$yield); abline(a=0,b=1)
 var.gW <- kronecker(grmW,WgwasGBLUP$sigma$`u:WID`)- WgwasGBLUP$PevU$`u:WID`$yield
 var.a.from.gW <- t(genoW_centered)%*%grmWinv%*% (var.gW) %*% t(grmWinv)%*%genoW_centered
-se.a.from.gW <- sqrt(diag(var.a.from.gW))
+se.a.from.gW <- sWrt(diag(var.a.from.gW))
 t.stat.from.gW <- a.from.gW/se.a.from.gW
-WpvalGBLUP <- dt(t.stat.from.gW,df=n-k-1) 
+WpvalGBLUP <- dt(t.stat.from.gW,df=n-k-1)
 
 ## ---- Section 10.6. Structure worker GWAS summary stat ----
 WgwasGBLUPsummary <- data.frame(markerName = colnames(genoWclean), 
