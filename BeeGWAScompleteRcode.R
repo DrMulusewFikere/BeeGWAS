@@ -378,10 +378,6 @@ QWgwasGBLUP <- mmer(yield~1,
                     data=phenoColony)
 
 ## ---- Section 11.3. Queen effect from Q + W model: construct GRM and Ginverse and centered Z ----
-grmQ <- grmQTemp + diag(nrow(genoQ))*0.000001
-is.positive.definite(grmQ) # has to be TRUE
-grmQinv <- solve(grmQ + diag(1e-6, ncol(grmQ), ncol(grmQ)))
-MTgrmQinv <- t(genoQ_centered)%*%grmQinv
 
 ## ---- Section 11.4. Queen effect from Q + W model:Back solve and calculate SNP effect, snpSE and Pvalues ----
 a.from.QW.gQ <-MTgrmQinv%*%matrix(QWgwasGBLUP$U$`u:QID`$yield,ncol=1)
@@ -415,10 +411,6 @@ QWgwasGBLUPsummary_Q <- paste0("QWgwasSummary_Q",
 fwrite(QWgwasGBLUP_summary_Q, file = QWgwasGBLUPsummary_Q)
 
 ## ---- Section 11.7. Worker effect from Q + W model: construct GRM and Ginverse and centered Z ----
-grmW <- grmWTemp + diag(nrow(genoW))*0.000001
-is.positive.definite(grmW) # has to be TRUE
-grmWinv <- solve(grmW + diag(1e-6, ncol(grmW), ncol(grmW)))
-MTgrmWinv <- t(genoW_centered)%*%grmWinv
 
 ## ---- Section 11.8. Worker effect from W + W model:Back solve and calculate SNP effect, snpSE and Pvalues ----
 a.from.QW.gW <-MTgrmWinv%*%matrix(QWgwasGBLUP$U$`u:WID`$yield,ncol=1)
