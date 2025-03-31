@@ -216,7 +216,50 @@ for (rep in 1:num_replications) {
       grmQinv <- solve(grmQ + diag(1e-6, ncol(grmQ), ncol(grmQ)))
       MTgrmQinv<- t(genoQ_centered)%*%grmQinv
       
-      # ---- Section 9. Fit a queen model----
+      # ---- Section 8. Perform GWAS for Queen Using ASreml-R (after Daniel's comment) ---- 
+      str(phenoColony)
+      Qmodel.asr <- asreml(fixed = yield ~ 1,
+                            random = ~ vm(QID, grmQ),
+                            data = phenoColony,
+                            # ai.loadings = TRUE,
+                            # ai.sing = TRUE,
+                            workspace = "16gb")
+
+      # ---- Section 8.1. Summary of the model ----
+      summary(Qmodel.asr)
+      # Predict SNP effects using the model and Extract variance components
+      predictions <- predict(Qmodel.asr, classify = "QID", only = "vm(QID, grmQ.2)", pworkspace = "16gb", vcov = T)
+      
+      blup_individuals <- predictions$pvals
+      hist(blup_individuals$predicted.value)
+      hist(blup_individuals$std.error)
+      head(blup_individuals)
+      plot(Qmodel.asr$coefficients$random, blup_individuals$predicted.value); abline(a=0, b=1)
+      
+      pev_individuals <- as.matrix(predictions$vcov)
+      plot(Qmodel.asr$vcoef$random * Qmodel.asr$sigma2, diag(pev_individuals)); abline(a=0, b=1)
+      
+      vc <- summary(Qmodel.asr)$varcomp
+      # Extract the BLUP of individuals
+      blup_individuals <- predictions$pvals$predicted.value
+      
+      # ---- Section 8.2. Start backsolve to compute SNP effects ----
+  
+      genoQ_centered <- scale(genoQ, center = TRUE, scale = FALSE)
+      Z <- genoQ_centered
+      G_inv <- solve(grmQ_tuneup)
+      # SNP effects (beta) = Z'G_inv * BLUP of individuals
+      snp_effects <- t(Z) %*% G_inv %*% blup_individuals
+      # Assuming a residual variance (sigma2) from the model
+      sigma2 <- Qmodel.asr$sigma^2
+      # Standard error of SNP effects
+      se_snp_effects <- sqrt(diag(sigma2 * solve(t(Z) %*% G_inv %*% Z)))
+      # # Calculate t-statistics and p-values (Two-tailed p-values)
+      t_stats <- snp_effects / se_snp_effects
+      p_values <- 2 * pt(-abs(t_stats), df = nrow(phenoColony) - 1)
+
+      
+      # ---- Section 9. Fit a queen model Using mmer package ----
       ## ---- Section 9.1. Structure pheno and geno data
       QgwasGBLUP <- mmer(yield~1,
                      random=~vsr(QID, Gu=grmQ),
