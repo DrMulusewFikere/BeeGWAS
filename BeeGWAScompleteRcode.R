@@ -110,7 +110,7 @@ for (rep in 1:num_replications) {
       SP$addTraitA(nQtlPerChr = nQtlPerChr, mean = meanP, var = varA, corA = corA,
                           name = c("yieldQueenTrait", "yieldWorkersTrait", "calmQueenTrait", "calmWorkersTrait"))
       
-      varE <- c(10, 10 / SP$nWorkers, 10, 10 / SP$nWorkers) # change values here for colony level h2 [0.05,0.2,0.5]
+      varE <- c(10, 10 / SP$nWorkers, 10, 10 / SP$nWorkers) # change values here to achive a predefined colony level h2 [0.05,0.2,0.5]
       varA / (varA + varE)
       corE <- matrix(data = c(1.0, 0.3, 0.0, 0.0,
                               0.3, 1.0, 0.0, 0.0,
