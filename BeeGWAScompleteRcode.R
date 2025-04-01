@@ -101,7 +101,7 @@ for (rep in 1:num_replications) {
       SP$setTrackRec(TRUE)
       
       ## ---- Section 4.5. Define variances ----
-      meanP <- c(10, 10 / SP$nWorkers, 10, 10)
+      meanP <- c(10, 10 / SP$nWorkers, 0, 0)
       varA <- c(1, 1 / SP$nWorkers, 1, 1 / SP$nWorkers)
       corA <- matrix(data = c(1.0, -0.5, 0.0, 0.0,
                               -0.5, 1.0, 0.0, 0.0,
