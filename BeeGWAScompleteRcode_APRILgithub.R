@@ -363,6 +363,9 @@ for (rep in 1:num_replications) {
         
       ## ---- Section 10.9. Save FDR results in all scenario ----
       Qgwas_fdr_results <- rbind(Qgwas_fdr_results, data.frame(Scenario = basename(QgwasGBLUP_summary_fdr), TP = TP, FP = FP, FDR = FDR))
+      Qgwas_fdr_results[,1] <- gsub("h2_15", "h2_0.5", Qgwas_fdr_results[,1])
+      Qgwas_fdr_results[,1] <- gsub("h2_45", "h2_0.2", Qgwas_fdr_results[,1])
+      Qgwas_fdr_results[,1] <- gsub("h2_150", "h2_0.05", Qgwas_fdr_results[,1])
       
       # ---- Section 11. Calculate GWAS power for Queen scenario ----
     
@@ -562,7 +565,10 @@ for (rep in 1:num_replications) {
         
         ## ---- Section 15.9. Save FDR results in all scenario and write a *.csv after the loop ----
         Wgwas_fdr_results <- rbind(Wgwas_fdr_results, data.frame(Scenario = basename(WgwasGBLUP_summary_fdr), TP = TP, FP = FP, FDR = FDR))
-        
+        Wgwas_fdr_results[,1] <- gsub("h2_15", "h2_0.5", Wgwas_fdr_results[,1])
+        Wgwas_fdr_results[,1] <- gsub("h2_45", "h2_0.2", Wgwas_fdr_results[,1])
+        Wgwas_fdr_results[,1] <- gsub("h2_150", "h2_0.05", Wgwas_fdr_results[,1])
+      
         # ---- Section 16. Calculate GWAS power for Queen scenario ----
         
         ## ---- Section 16.1. Set GWAS power parameters ----
