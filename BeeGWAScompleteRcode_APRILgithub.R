@@ -59,7 +59,7 @@ ahbmngGenoID <- as.data.frame(cbind(ID, ahbmngGeno))
 
 num_replications <- 1
 sampleSizes <- 500 #c(100,500, 1000, 1600)
-colonyH2s <- 10 # corresponds to "colonyH2s <- c(0.5, 0.2, 0.05)"
+colonyH2s <- 10 # c(10, 45,150) corresponds to "colonyH2s <- c(0.5, 0.2, 0.05)"
 nQtlsPerChr <- 10 #c(1, 10,100)
 nChips <- 1 # c(1,2,3)
 
