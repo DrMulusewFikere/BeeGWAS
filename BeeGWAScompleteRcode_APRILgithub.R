@@ -76,8 +76,20 @@ set.seed(123456)
 
 ## ---- Section 3.4. Create a data frame to store results ----
 Qgwas_fdr_results <- data.frame(Scenario = character(), TP = numeric(), FP = numeric(), FDR = numeric(), stringsAsFactors = FALSE)
+Wgwas_fdr_results <- data.frame(Scenario = character(), TP = numeric(), FP = numeric(), FDR = numeric(), stringsAsFactors = FALSE)
+QWgwas_Q_fdr_results <- data.frame(Scenario = character(), TP = numeric(), FP = numeric(), FDR = numeric(), stringsAsFactors = FALSE)
+QWgwas_W_fdr_results <- data.frame(Scenario = character(), TP = numeric(), FP = numeric(), FDR = numeric(), stringsAsFactors = FALSE)
+
 Qgwas_power_results <- data.frame(Scenario = character(), Power = numeric(), stringsAsFactors = FALSE)
+Wgwas_power_results <- data.frame(Scenario = character(), Power = numeric(), stringsAsFactors = FALSE)
+QWgwas_Q_power_results <- data.frame(Scenario = character(), Power = numeric(), stringsAsFactors = FALSE)
+QWgwas_W_power_results <- data.frame(Scenario = character(), Power = numeric(), stringsAsFactors = FALSE)
+
 intermidiate_scenario_QgwasGBLUP_summary <- data.frame()
+intermidiate_scenario_WgwasGBLUP_W_summary <- data.frame()
+intermidiate_scenario_QWgwasGBLUP_Q_summary <- data.frame()
+intermidiate_scenario_QWgwasGBLUP_W_summary <- data.frame()
+
 Qgwas_pmin_dist_results <- data.frame(
   GWAS_File = character(),
   Total_Markers = numeric(),
@@ -89,6 +101,26 @@ Qgwas_pmin_dist_results <- data.frame(
   stringsAsFactors = FALSE)
 
 Wgwas_pmin_dist_results <- data.frame(
+  GWAS_File = character(),
+  Total_Markers = numeric(),
+  Psig = numeric(),
+  CI_Lower = numeric(),
+  CI_Upper = numeric(),
+  Neff = numeric(),
+  Ratio = numeric(),
+  stringsAsFactors = FALSE)
+
+QWgwas_Q_pmin_dist_results <- data.frame(
+  GWAS_File = character(),
+  Total_Markers = numeric(),
+  Psig = numeric(),
+  CI_Lower = numeric(),
+  CI_Upper = numeric(),
+  Neff = numeric(),
+  Ratio = numeric(),
+  stringsAsFactors = FALSE)
+
+QWgwas_W_pmin_dist_results <- data.frame(
   GWAS_File = character(),
   Total_Markers = numeric(),
   Psig = numeric(),
@@ -734,7 +766,9 @@ for (rep in 1:num_replications) {
           
           ## ---- Section 20.9. Save FDR results in all scenario and write a *.csv after the loop ----
           QWgwas_Q_fdr_results <- rbind(QWgwas_Q_fdr_results, data.frame(Scenario = basename(QWgwasGBLUP_Q_summary_fdr), TP = TP, FP = FP, FDR = FDR))
-          
+          QWgwas_Q_fdr_results[,1] <- gsub("h2_15", "h2_0.5", QWgwas_Q_fdr_results[,1])
+          QWgwas_Q_fdr_results[,1] <- gsub("h2_45", "h2_0.2", QWgwas_Q_fdr_results[,1])
+          QWgwas_Q_fdr_results[,1] <- gsub("h2_150", "h2_0.05", QWgwas_Q_fdr_results[,1])
           # ---- Section 21. Calculate GWAS power for Queen scenario ----
           
           ## ---- Section 21.1. Set GWAS power parameters ----
@@ -887,7 +921,10 @@ for (rep in 1:num_replications) {
           
           ## ---- Section 25.14. Save FDR results in all scenario and write a *.csv after the loop ----
           QWgwas_W_fdr_results <- rbind(QWgwas_W_fdr_results, data.frame(Scenario = basename(QWgwasGBLUP_W_summary_fdr), TP = TP, FP = FP, FDR = FDR))
-          
+          QWgwas_W_fdr_results[,1] <- gsub("h2_15", "h2_0.5", QWgwas_W_fdr_results[,1])
+          QWgwas_W_fdr_results[,1] <- gsub("h2_45", "h2_0.2", QWgwas_W_fdr_results[,1])
+          QWgwas_W_fdr_results[,1] <- gsub("h2_150", "h2_0.05", QWgwas_W_fdr_results[,1])
+            
           # ---- Section 26. Calculate GWAS power for Worker scenario ----
           
           ## ---- Section 26.1. Set GWAS power parameters ----
