@@ -485,7 +485,7 @@ for (rep in 1:num_replications) {
           CI_Upper = ci_pval[2],
           Neff = neff,
           Ratio = ratio)
-
+                }
   # ----- Section 13. END OF QUEEN MODEL ----
   #           }
   #           
@@ -688,7 +688,7 @@ for (rep in 1:num_replications) {
             Neff = neff,
             Ratio = ratio)
       # ----- Section 18. END OF WORKER MODEL ----
-          
+          }
 #           }
 #       
 #         }
@@ -856,7 +856,8 @@ for (rep in 1:num_replications) {
               Neff = neff,
               Ratio = ratio)
             # ----- Section 24. END OF QUEEN + WORKER (Q) MODEL ----
-
+               }
+            
  #           }
  #           
  #         }
@@ -1011,8 +1012,7 @@ for (rep in 1:num_replications) {
               CI_Upper = ci_pval[2],
               Neff = neff,
               Ratio = ratio)
-          }
-            
+              }
           }
        }
       }
