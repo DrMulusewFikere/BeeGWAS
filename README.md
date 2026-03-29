@@ -136,9 +136,7 @@ False positives were defined as significant SNPs that do not overlap any predefi
 
 FDR was calculated as:
 
-\[
-FDR = \frac{FP}{TP + FP}
-\]
+FDR = FP / (TP + FP)
 
 Each simulation replicate contributes one FDR estimate per scenario.
 
@@ -169,16 +167,15 @@ where:
 
 Statistical power was calculated as:
 
-\[
-Power = P(Z > Z_{\alpha/2} | NCP)
-\]
+Power = P(Z > Zα/2 | NCP)
 
-implemented as:
+where:
+- Zα/2 is the critical value at significance level α  
+- NCP is the non-centrality parameter  
 
-- Two-sided test at:
-\[
-\alpha = 10^{-6}
-\]
+A two-sided significance threshold was used:
+
+α = 1 × 10⁻⁶
 
 - Using normal approximation of non-centrality distribution
 
@@ -186,14 +183,11 @@ implemented as:
 
 For each simulation replicate:
 
-- SNP-level power was computed
-- Mean GWAS power was calculated across all SNPs
-- Standard error of power was estimated:
+- SNP-level power was computed  
+- Mean GWAS power was calculated across all SNPs  
+- Standard error of power was estimated as:
 
-\[
-SE = \frac{SD}{\sqrt{n}}
-\]
-
+SE = SD / √n
 
 ## Output structure
 
@@ -212,35 +206,22 @@ To characterize the empirical significance threshold, an intermediate simulation
 - \( nQTL = 10 \)
 - \( SNP density = 10k per chromosome \)
 
-
 ## Procedure
 
 1. Transform p-values:
-
-\[
--\log_{10}(P)
-\]
+-log10(P)
 
 2. Estimate empirical 95th percentile using **Harrell–Davis estimator**
-
 3. Compute:
 
-- Effective significance threshold:
-\[
-P_{sig}
-\]
+- Effective significance threshold:  
+P_sig
 
-- Effective number of independent markers:
-\[
-N_{eff} = \frac{\alpha}{P_{sig}}
-\]
+- Effective number of independent markers:  
+N_eff = α / P_sig
 
-- Marker independence ratio:
-\[
-\text{Ratio} = \frac{N_{eff}}{Total\ markers}
-\]
-
----
+- Marker independence ratio:  
+Ratio = N_eff / Total markers
 
 ## Output
 
