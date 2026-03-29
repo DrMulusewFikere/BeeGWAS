@@ -1,3 +1,7 @@
+### Please review the workflow figure for the detail.
+
+![BeeGWAS Workflow](https://raw.githubusercontent.com/DrMulusewFikere/BeeGWAS/main/workflowBeeGWAS.png)
+
 # ---- Section 1 - Load library ----
 library(AlphaSimR)
 library(SIMplyBee)
