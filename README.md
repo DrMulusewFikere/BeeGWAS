@@ -74,13 +74,13 @@ Uses queen genotype with genomic relationship matrix (GRM):
 
 ```r
 random = ~ vs(id, Gu = QGRM)
-
-###  Workers-only Model
+```
+### Queen-only Model
 Uses workers genotype with genomic relationship matrix (GRM):
 
 ```r
 random = ~ vs(id, Gu = WGRM)
-
+```
 ### Queen + Workers Model
 Uses queen + workers genotype with genomic relationship matrix (GRM):
 
