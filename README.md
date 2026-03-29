@@ -30,7 +30,7 @@ Honey bee colonies consist of:
 Traits are influenced by both individual and colony-level genetics, making GWAS analysis more complex than in standard diploid populations.
 
 
-## ⚙️ Workflow Summary
+## Workflow Summary
 
 The pipeline includes the following steps:
 
