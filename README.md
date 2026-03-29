@@ -164,7 +164,7 @@ For each scenario (sample size, heritability, SNP density, QTL number, replicati
 GWAS power was computed for each SNP using the **non-centrality parameter (NCP)**:
 
 NCP = (β / SE) × √[ N × 2 × MAF × (1 − MAF) ]
-
+NCP = (beta / SE) * sqrt(N * 2 * MAF * (1 - MAF))
 where:
 
 - \( beta \) = SNP effect size  
