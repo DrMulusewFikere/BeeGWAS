@@ -58,7 +58,7 @@ Using `SIMplyBee`:
 ### 4. Trait Simulation
 Traits include:
 - Yield (production-related)
-- Calmness (behavioral trait)
+- Calmness (behavioral trait): not reported 
 
 Phenotypes include:
 - Queen genetic effects
