@@ -167,7 +167,7 @@ NCP = (β / SE) × √[ N × 2 × MAF × (1 − MAF) ]
 
 where:
 
-- \( \beta \) = SNP effect size  
+- \( beta \) = SNP effect size  
 - \( SE \) = standard error  
 - \( N \) = sample size  
 - \( MAF \) = minor allele frequency  
