@@ -1,16 +1,79 @@
-# BeeGWAS
+# 🐝 BeeGWAS
 
-## Objectives
-i)   To simulate colony phenotype using a real genomic data \
-ii)  To dissect the queen and workers “contribution to the GWAS power” \
-iii) To determine sample size (n) to be sequenced to achieve an optimal GWAS power with a lower FDR \
-iv)  Revisiting p-value threshold to be used in honey bee GWAS 
+Genome-wide association study (GWAS) simulation and analysis pipeline for honey bee (*Apis mellifera*) colony traits.
 
-## The steps
-i)   Import phased haplotype genomic data and initializing phenotype simulation and \
-ii)  Make a cross \
-iii) PoolGenotype of worker \
-iv) Then estimate colony level phenotype  \
- v) Export simulated phenotype and match genotype data \
-vi) Perform GWAS for Queen and Worker and Queen + Worker using RRBLUP or GBLUP approach \
-vii) Results from vi) were backsolved to get marker effect and GWAS summary stat  
+This repository contains the full R workflow used to simulate colony-based genetic architectures and evaluate GWAS performance under different biological and statistical scenarios.
+
+The associated manuscript has been submitted to *Scientific Reports*.
+
+---
+
+## 📌 Overview
+
+BeeGWAS is a simulation and analysis framework designed to study genome-wide associations in honey bees using realistic colony structure. The pipeline integrates queen, drone, and worker genetic contributions to model complex colony-level phenotypes.
+
+It is designed to evaluate:
+
+- GWAS power under different genetic architectures  
+- False discovery rate (FDR) across simulation scenarios  
+- Impact of sample size, heritability, and SNP density  
+- Contribution of queen vs worker genomes  
+- Joint modeling of colony genetic effects  
+
+---
+
+## 🧬 Biological Context
+
+Honey bee colonies consist of:
+
+- 👑 Queens (reproductive female, diploid)
+- 🐝 Workers (sterile females, colony contributors)
+- 🐝 Drones (haploid males)
+
+Traits are influenced by both individual and colony-level genetics, making GWAS analysis more complex than in standard diploid populations.
+
+---
+
+## ⚙️ Workflow Summary
+
+The pipeline includes the following steps:
+
+### 1. Data Input
+- Haplotyped genotype matrix
+- Marker position file
+
+### 2. Simulation Setup
+- Define sample size
+- Set heritability levels
+- Configure number of QTLs
+- Select SNP chip density
+
+### 3. Colony Simulation
+Using `SIMplyBee`:
+- Generate virgin queens
+- Produce drones
+- Simulate mating
+- Construct colonies
+- Generate phenotypes
+
+### 4. Trait Simulation
+Traits include:
+- Yield (production-related)
+- Calmness (behavioral trait)
+
+Phenotypes include:
+- Queen genetic effects
+- Worker genetic effects
+- Environmental variation
+
+---
+
+## 🧪 GWAS Models
+
+Three GWAS models are implemented:
+
+### 👑 Queen-only GWAS
+Uses queen genotype with genomic relationship matrix (GRM):
+
+```r
+random = ~ vs(id, Gu = GRM)
