@@ -126,7 +126,7 @@ A genomic window of:
 
 was used to match significant SNPs with predefined causal QTL positions.
 
-## 📍 True Positive (TP) definition
+## True Positive (TP) definition
 
 A QTL was considered detected if at least one significant SNP fell within the ±5 kb window of its position:
 
@@ -159,9 +159,9 @@ For each scenario (sample size, heritability, SNP density, QTL number, replicati
 | simulated_condition | count | count | value |
 
 
-# ⚡ GWAS Power Analysis
+#  GWAS Power Analysis
 
-## 📌 SNP-wise power calculation
+## SNP-wise power calculation
 
 GWAS power was computed for each SNP using the **non-centrality parameter (NCP)**:
 
@@ -175,7 +175,6 @@ where:
 - \( SE \) = standard error  
 - \( N \) = sample size  
 - \( MAF \) = minor allele frequency  
-
 
 ## Power computation
 
@@ -193,7 +192,6 @@ implemented as:
 \]
 
 - Using normal approximation of non-centrality distribution
-
 
 ## Scenario-level power
 
@@ -217,7 +215,7 @@ Each scenario produces:
 | simulated_condition | mean power | standard error |
 
 
-# 🧪 Pmin Distribution and Effective Number of Tests
+# Pmin Distribution and Effective Number of Tests
 
 To characterize the empirical significance threshold, an intermediate simulation scenario was used:
 
@@ -226,7 +224,7 @@ To characterize the empirical significance threshold, an intermediate simulation
 - \( SNP density = 10k per chromosome \)
 
 
-## 📌 Procedure
+## Procedure
 
 1. Transform p-values:
 
