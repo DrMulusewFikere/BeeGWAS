@@ -2,7 +2,7 @@
 
 Genome-wide association study (GWAS) simulation and analysis pipeline for honey bee (*Apis mellifera*) colony traits.
 
-This repository contains the full R workflow used to simulate colony-based genetic architectures and evaluate GWAS performance under different biological and statistical scenarios.
+This repository contains the full R workflow used to simulate colony-based genetic architectures and evaluate GWAS performance under different biological and statistical scenarios. Please review the workflow figure for the detail.
 
 The associated manuscript has been submitted to *Scientific Reports*.
 
