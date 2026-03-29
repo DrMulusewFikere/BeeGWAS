@@ -88,8 +88,6 @@ Uses queen + workers genotype with genomic relationship matrix (GRM):
 random=~vsr(id, Gu=QGRM) + vsr(id, Gu=WGRM)
 ```
 
-### Finally Permutation, estimate GWAS statistical Power and FDR
-
 # GWAS Power and False Discovery Rate (FDR) Analysis
 
 This section describes the evaluation of GWAS performance in terms of **statistical power** and **false discovery rate (FDR)** across different simulation scenarios for queen, worker, and combined colony models.
