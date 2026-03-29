@@ -110,17 +110,11 @@ For each scenario, GWAS performance was evaluated using:
 
 ## Definition of significant SNPs
 
-Genome-wide significant SNPs were defined using:
+Genome-wide significant SNPs were defined using a threshold:
 
-\[
-P < 1 \times 10^{-6}
-\]
+P < 1 × 10⁻⁶
 
-A genomic window of:
-
-\[
-\pm 5,000 \text{ bp}
-\]
+A genomic window of ±5,000 base pairs (bp) was used to define QTL overlap.
 
 was used to match significant SNPs with predefined causal QTL positions.
 
@@ -163,7 +157,6 @@ For each scenario (sample size, heritability, SNP density, QTL number, replicati
 
 GWAS power was computed for each SNP using the **non-centrality parameter (NCP)**:
 
-NCP = (β / SE) × √[ N × 2 × MAF × (1 − MAF) ]
 NCP = (beta / SE) * sqrt(N * 2 * MAF * (1 - MAF))
 where:
 
