@@ -6,6 +6,8 @@ This repository contains the full R workflow used to simulate colony-based genet
 
 The associated manuscript has been submitted to *Scientific Reports*.
 
+![BeeGWAS Workflow](https://raw.githubusercontent.com/DrMulusewFikere/BeeGWAS/main/workflowBeeGWAS.png)
+
 ## Overview
 
 BeeGWAS is a simulation and analysis framework designed to study genome-wide associations in honey bees using realistic colony structure. The pipeline integrates queen, drone, and worker genetic contributions to model complex colony-level phenotypes.
